@@ -1917,6 +1917,17 @@ input, select, textarea {
 
 		}
 
+	.cv-button {
+		background-color: inherit;
+		padding: 8px 16px;
+		border-radius: 4px;
+		transition: background-color 0.3s ease;
+	}
+	
+	.cv-button:hover {
+		background-color: inherit;
+	}
+
 /* Main */
 
 	.main {
