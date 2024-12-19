@@ -2287,10 +2287,8 @@ input, select, textarea {
 #one .content {
     position: relative;
     z-index: 1;
-	background-color: rgba(0, 0, 0, 0.6); /* Zwarte achtergrond met 60% dekking */
-    padding: 2em;
-    border-radius: 8px;
-    backdrop-filter: blur(3px); /* Optioneel: voegt een subtle blur effect toe */
+	background-color: rgba(255, 255, 255, 0.6); /* Zwarte achtergrond met 60% dekking */
+    backdrop-filter: blur(5px); /* Optioneel: voegt een subtle blur effect toe */
 }
 
 /* Two */
