@@ -2356,14 +2356,25 @@ input, select, textarea {
 			width: 300px;
 			height: 300px;
 			overflow: hidden;
-		  }
-		  
-		  .profile-picture {
+			margin: 0 auto;  /* Centers the container horizontally */
+			display: block;  /* Ensures block-level display */
+			margin-bottom: 2rem;  /* Adds space between picture and text */
+		}
+		
+		.profile-picture {
 			width: 100%;
 			height: 100%;
 			object-fit: cover;
 			border-radius: 50%;
-		  }
+			display: block;  /* Ensures the image itself is block-level */
+		}
+		
+		/* Make sure the content container allows for centering */
+		#contact .content {
+			text-align: center;  /* Centers text and inline elements */
+			max-width: 100%;    /* Ensures full width */
+			margin: 0 auto;     /* Centers the content container */
+		}
 		  
 		  .text-content {
 			flex-grow: 1;
