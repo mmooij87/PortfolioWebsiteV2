@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { PlaylistData } from '@/lib/types';
+import type { FC } from 'react';
+// Removed unused PlaylistData import
 
 interface AutoRefreshProps {
   onRefresh: () => void;
@@ -35,9 +36,20 @@ export default function AutoRefresh({ onRefresh, lastUpdated, interval = 60 }: A
   const handleRefresh = async () => {
     if (isRefreshing) return;
     
+    // Save current scroll position before refreshing
+    const scrollPosition = window.scrollY;
+    
     setIsRefreshing(true);
     try {
       await onRefresh();
+      
+      // Restore scroll position after data is refreshed
+      setTimeout(() => {
+        window.scrollTo({
+          top: scrollPosition,
+          behavior: 'auto'
+        });
+      }, 100); // Small delay to ensure DOM has updated
     } finally {
       setIsRefreshing(false);
     }

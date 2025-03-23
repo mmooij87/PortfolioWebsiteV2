@@ -1,0 +1,161 @@
+/* Song details panel styles */
+:root {
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --text-primary: #ffffff;
+    --text-secondary: #b3b3b3;
+    --accent-color: #1DB954;
+    --border-color: #333333;
+    --hover-bg: #282828;
+}
+
+.song-details-panel {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    position: relative;
+    max-height: 500px;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, opacity 0.3s ease-out, margin 0.3s ease-out;
+}
+
+.song-details-panel.collapsed {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.song-details-content {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.song-cover-art {
+    width: 120px;
+    height: 120px;
+    border-radius: 6px;
+    margin-right: 20px;
+    margin-bottom: 15px;
+    background-color: var(--hover-bg);
+    overflow: hidden;
+}
+
+.song-cover-art img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.song-info {
+    flex: 1;
+    min-width: 200px;
+}
+
+.song-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.song-artist {
+    font-size: 18px;
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+}
+
+.close-btn:hover {
+    background-color: var(--hover-bg);
+    color: var(--text-primary);
+}
+
+.song-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.song-action-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--hover-bg);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.song-action-btn.youtube {
+    background-color: rgba(255, 0, 0, 0.2);
+}
+
+.song-action-btn.spotify {
+    background-color: rgba(29, 185, 84, 0.2);
+}
+
+/* Dark mode compatibility */
+@media (prefers-color-scheme: dark) {
+    .song-details-panel {
+        background-color: #1e1e1e;
+        color: #ffffff;
+    }
+    
+    .song-artist {
+        color: #b3b3b3;
+    }
+    
+    .close-btn {
+        color: #b3b3b3;
+    }
+    
+    .close-btn:hover {
+        background-color: #282828;
+        color: #ffffff;
+    }
+}
+
+/* Light mode compatibility */
+@media (prefers-color-scheme: light) {
+    .song-details-panel {
+        background-color: #f5f5f5;
+        color: #333333;
+    }
+    
+    .song-artist {
+        color: #666666;
+    }
+    
+    .close-btn {
+        color: #666666;
+    }
+    
+    .close-btn:hover {
+        background-color: #e0e0e0;
+        color: #333333;
+    }
+    
+    .song-action-btn {
+        background-color: #e0e0e0;
+        color: #333333;
+    }
+}
