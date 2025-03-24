@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import * as cheerio from 'cheerio';
+import { type NextRequest, type NextResponse } from 'next/server';
+import cheerio from 'cheerio';
 
 const PLAYLIST_URL = "https://onlineradiobox.com/nl/kink/playlist/?cs=nl.slamfm";
 

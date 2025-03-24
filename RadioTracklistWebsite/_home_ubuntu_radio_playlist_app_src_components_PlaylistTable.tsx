@@ -47,6 +47,15 @@ export default function PlaylistTable({ songs, lastUpdated }: PlaylistTableProps
   };
   
   const handleTrackClick = async (songIndex: number) => {
+    // Remove highlight from all rows
+    const rows = document.querySelectorAll('.playlist-row');
+    rows.forEach(row => row.classList.remove('selected'));
+    
+    // Add highlight to clicked row
+    const clickedRow = document.querySelector(`.playlist-row[data-index='${songIndex}']`);
+    if (clickedRow) {
+      clickedRow.classList.add('selected');
+    }
     // If clicking the same track, toggle it closed
     if (selectedTrackId === songIndex) {
       setSelectedTrackId(null);
@@ -89,7 +98,12 @@ export default function PlaylistTable({ songs, lastUpdated }: PlaylistTableProps
   // CSS styles for song details panel
 const songDetailsPanelStyles = `
   /* Song details panel styles */
-  .song-details-panel {
+  .selected {
+    background-color: rgba(59, 130, 246, 0.1);
+    outline: 2px solid rgba(59, 130, 246, 0.5);
+}
+
+.song-details-panel {
     background-color: #1e1e1e;
     border-radius: 12px;
     padding: 20px;
@@ -195,7 +209,12 @@ const songDetailsPanelStyles = `
 
   /* Light mode compatibility */
   @media (prefers-color-scheme: light) {
-    .song-details-panel {
+    .selected {
+    background-color: rgba(59, 130, 246, 0.1);
+    outline: 2px solid rgba(59, 130, 246, 0.5);
+}
+
+.song-details-panel {
       background-color: #f5f5f5;
       color: #333333;
     }

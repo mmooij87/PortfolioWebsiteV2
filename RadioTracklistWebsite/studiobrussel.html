@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KINK Playlist</title>
+    <title>Studio Brussel Playlist</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@700&display=swap" rel="stylesheet">
     <link rel="icon" href="assets/favicon_Music.svg">
     <!-- Remove this line: -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
     <script src="https://www.youtube.com/iframe_api"></script>
     <style>
         :root {
@@ -306,6 +307,21 @@
             border-bottom: 2px solid var(--accent-color);
         }
         
+        /* Style for refresh tab */
+        .day-tab.refresh-tab {
+            flex: 0.5;
+            min-width: 60px;
+            background-color: var(--card-bg);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .day-tab.refresh-tab:hover {
+            background-color: var(--hover-bg);
+            color: var(--text-primary);
+        }
+        
         .refresh-tab {
             display: flex;
             align-items: center;
@@ -445,47 +461,7 @@
             color: var(--text-primary);
         }
         
-        .refresh-btn {
-            background-color: transparent;
-            color: black;
-            border: 1px solid var(--border-color);
-            border-radius: 50%;
-            width: 40px; /* Smaller size */
-            height: 40px; /* Smaller size */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            aspect-ratio: 1/1;
-            position: absolute;
-            right: 20px; /* Align with the playlist table */
-            top: -40px; /* Position higher above the text */
-        }
-        
-        /* Media query voor mobiele apparaten */
-        @media (max-width: 768px) {
-            .refresh-btn {
-                width: 32px; /* Even smaller on mobile */
-                height: 32px; /* Even smaller on mobile */
-                right: 20px;
-                top: -35px; /* Also higher on mobile */
-            }
-            
-            .refresh-btn svg {
-                width: 16px;
-                height: 16px;
-            }
-        }
-        
-        .refresh-btn:hover {
-            background-color: var(--hover-bg);
-        }
-        
-        .refresh-btn svg {
-            width: 20px; /* Smaller icon */
-            height: 20px; /* Smaller icon */
-        }
+
         
         .loading {
             display: flex;
@@ -586,10 +562,28 @@
     
     <div class="container">
         <header>
-            <img src="assets/Kink_FM_logo.svg" alt="KINK Logo" style="max-width: 100%; height: auto;">
+            <img src="assets/studio_brussel_logo.png" alt="KINK Logo" style="max-width: 100%; height: auto;">
             <p class="subtitle">Live updates of songs played on KINK radio station</p>
         </header>
-        
+
+        <!-- Radio Player -->
+        <div class="audio-player">
+            <div class="player-controls">
+                <button class="play-btn" id="play-btn">
+                    <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    <svg id="pause-icon" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                    </svg>
+                </button>
+                <div class="player-info">
+                    <div id="now-playing">Klik om live te luisteren</div>
+                    <input type="range" class="volume-slider" id="volume" min="0" max="100" value="80">
+                </div>
+            </div>
+        </div>
+
         <div class="refresh-bar">
             <div class="last-updated" id="last-updated">Last updated: --:--</div>
         </div>
@@ -605,9 +599,12 @@
         <!-- Day tabs navigation -->
         <div id="day-tabs" class="day-tabs">
             <div class="day-tab refresh-tab" id="refresh-btn" title="Refresh Now">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-                    <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
-                </svg>
+                <div class="day-name">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
+                        <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                    </svg>
+                </div>
+                <div class="day-date"></div>
             </div>
             <div class="day-tab" data-day="6">
                 <div class="day-name">ZO</div>
@@ -643,14 +640,9 @@
             <!-- Playlist items will be inserted here -->
         </div>
         
-        <!-- Move the refresh button below the playlist -->
+        <!-- Bottom info bar -->
         <div class="refresh-bar">
             <div class="last-updated" id="last-updated">Last updated: --:--</div>
-            <div class="refresh-btn" id="refresh-btn" title="Refresh Now">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-                    <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
-                </svg>
-            </div>
         </div>
         
         <footer>
@@ -664,7 +656,6 @@
         const errorEl = document.getElementById('error');
         const playlistEl = document.getElementById('playlist');
         const lastUpdatedEl = document.getElementById('last-updated');
-        const refreshBtn = document.getElementById('refresh-btn');
         const artistBackgroundEl = document.getElementById('artist-background');
 
         // Constants
@@ -683,6 +674,7 @@
             // Update day tabs with correct dates
             updateDayTabs();
             
+            // Fetch playlist immediately when page loads
             fetchPlaylist();
             startAutoRefresh();
             
@@ -719,6 +711,12 @@
                         });
                     }
                 });
+                
+                // Add event listener for refresh button
+                const refreshBtn = document.getElementById('refresh-btn');
+                if (refreshBtn) {
+                    refreshBtn.addEventListener('click', handleManualRefresh);
+                }
             }
         });
         
@@ -1147,42 +1145,71 @@
         // Set refreshing state
         function setRefreshing(state) {
             isRefreshing = state;
-            refreshBtn.disabled = state;
         }
 
-        // Remove these functions:
-        async function getTopYouTubeVideoId(query) {
-            const response = await fetch(`https://www.googleapis.com/youtube/v3/search?part=id&q=${encodeURIComponent(query)}&key=AIzaSyAP-qJzFwmVMxNk6xYzHAnq34qosPd0Wc8&type=video`);
-            const data = await response.json();
-            return data.items.length > 0 ? data.items[0].id.videoId : null;
-        }
+        // Initialize audio player with Howler.js
+        const RADIO_STREAM_URL = 'http://icecast.vrtcdn.be/stubru-high.mp3';
+        let player = null;
+        let isPlaying = false;
 
-        // YouTube IFrame API ready callback
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('youtube-player', {
-                events: {
-                    'onReady': onPlayerReady
+        // Initialize audio player
+        function initAudioPlayer() {
+            player = new Howl({
+                src: [RADIO_STREAM_URL],
+                html5: true,
+                preload: false,
+                volume: 0.8,
+                onplay: function() {
+                    isPlaying = true;
+                    updatePlayerUI();
+                },
+                onpause: function() {
+                    isPlaying = false;
+                    updatePlayerUI();
+                },
+                onstop: function() {
+                    isPlaying = false;
+                    updatePlayerUI();
+                },
+                onloaderror: function() {
+                    alert('Error loading radio stream');
+                },
+                onplayerror: function() {
+                    alert('Error playing radio stream');
                 }
+            });
+
+            document.getElementById('play-btn').addEventListener('click', togglePlay);
+            document.getElementById('volume').addEventListener('input', function(e) {
+                player.volume(e.target.value / 100);
             });
         }
 
-        // Event handler for when the player is ready
-        function onPlayerReady(event) {
-            // Player is ready
+        function togglePlay() {
+            if (!player) {
+                initAudioPlayer();
+            }
+            isPlaying ? player.pause() : player.play();
         }
 
-        // Laad de YouTube-video in de widget
-        function loadYouTubeVideo(artist, title) {
-            const query = `${artist} ${title}`;
-            getTopYouTubeVideoId(query).then(videoId => {
-                if (videoId) {
-                    player.loadVideoById(videoId);
-                    document.getElementById('youtube-widget').style.display = 'block'; // Toon de widget
-                } else {
-                    alert('Geen video gevonden.');
-                }
-            });
+        function updatePlayerUI() {
+            const nowPlayingEl = document.getElementById('now-playing');
+            const playIcon = document.getElementById('play-icon');
+            const pauseIcon = document.getElementById('pause-icon');
+            
+            if (isPlaying) {
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+                nowPlayingEl.textContent = 'Live luisteren naar Studio Brussel';
+            } else {
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
+                nowPlayingEl.textContent = 'Klik om live te luisteren';
+            }
         }
+
+        // Initialize player when DOM loads
+        document.addEventListener('DOMContentLoaded', initAudioPlayer);
         
         // Generate album art color based on artist and title
         function generateAlbumArtColor(artist, title) {
@@ -1202,12 +1229,12 @@
 
         // Start auto-refresh timer
         function startAutoRefresh() {
-            // Set an interval to fetch the playlist every 10 seconds
+            // Set an interval to fetch the playlist every 5 minutes
             setInterval(() => {
                 if (!isRefreshing) {
                     fetchPlaylist();
                 }
-            }, 10000); // 10000 milliseconds = 10 seconds
+            }, 300000); // 300000 milliseconds = 5 minutes
         }
         
         // Handle manual refresh button click
@@ -1216,6 +1243,8 @@
                 fetchPlaylist();
             }
         }
+        // Call fetchPlaylist immediately when script loads to ensure fresh data
+        fetchPlaylist();
     </script>
 </body>
 </html>
