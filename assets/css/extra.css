@@ -1,0 +1,12 @@
+/* Gallery: looping clips and labels */
+.gallery article .image { position: relative; overflow: hidden; }
+.gallery article .image .tile-loop {
+	position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+	object-fit: cover; pointer-events: none; display: block;
+}
+.gallery article .image .tag {
+	position: absolute; left: 0.75em; bottom: 0.75em; z-index: 2;
+	background: rgba(20, 22, 30, 0.72); color: #fff;
+	font-size: 0.6em; letter-spacing: 0.12em; text-transform: uppercase;
+	line-height: 1; padding: 0.55em 0.8em; border-radius: 2px; pointer-events: none;
+}
